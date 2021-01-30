@@ -1,0 +1,15 @@
+S3method(predict, PCLasso)
+S3method(predict, cv.PCLasso)
+S3method(plot, PCLasso)
+S3method(plot, cv.PCLasso)
+
+export("PCLasso", "predict.PCLasso", "plot.PCLasso",
+        "cv.PCLasso", "predict.cv.PCLasso", "plot.cv.PCLasso")
+
+importFrom("stats", "predict")
+importFrom("graphics", "plot")
+
+import(
+    survival,
+    grpreg
+)
