@@ -50,24 +50,30 @@ Park, H., Niida, A., Miyano, S. and Imoto, S. (2015) Sparse overlapping group la
 
 # Examples
 library("PCLasso")
+
 library("survival")
 
 ## load data
 data(ExpMatrix)
+
 data(survData)
+
 data(PCGroup)
 
 set.seed(429006)
+
 train.Idx <- sample(nrow(ExpMatrix), floor(2/3*nrow(ExpMatrix)))
+
 x.train <- ExpMatrix[train.Idx ,]
+
 x.test <- ExpMatrix[-train.Idx ,]
+
 y.train <- survData[train.Idx,]
+
 y.test <- survData[-train.Idx,]
 
-cv.fit1 <- cv.PCLasso(x = x.train, 
-                     y = Surv(time=y.train[,"time"], event=y.train[,"status"]),
-                     group = PCGroup,
-                     nfolds = 5)
+cv.fit1 <- cv.PCLasso(x = x.train, y = Surv(time=y.train[,"time"], event=y.train[,"status"]), group = PCGroup, nfolds = 5)
+                     
 ## plot the norm of each group
 plot(cv.fit1, norm = TRUE)
 
@@ -89,39 +95,22 @@ s <- predict(object = cv.fit1, x = x.test, type="link",
              lambda= c(0.1, 0.01))
 
 ## Nonzero coefficients
-sel.groups <- predict(object = cv.fit1, type="groups",
-                      lambda = cv.fit1$cv.fit$lambda.min)
-sel.ngroups <- predict(object = cv.fit1, type="ngroups",
-                       lambda = cv.fit1$cv.fit$lambda.min)
-sel.vars.unique <- predict(object = cv.fit1, type="vars.unique",
-                     lambda = cv.fit1$cv.fit$lambda.min)
-sel.nvars.unique <- predict(object = cv.fit1, type="nvars.unique",
-                     lambda = cv.fit1$cv.fit$lambda.min)
-sel.vars <- predict(object = cv.fit1, type="vars",
-                    lambda=cv.fit1$cv.fit$lambda.min)
-sel.nvars <- predict(object = cv.fit1, type="nvars",
-                     lambda=cv.fit1$cv.fit$lambda.min)
+sel.groups <- predict(object = cv.fit1, type="groups", lambda = cv.fit1$cv.fit$lambda.min)
+                      
+sel.ngroups <- predict(object = cv.fit1, type="ngroups", lambda = cv.fit1$cv.fit$lambda.min)
+                       
+sel.vars.unique <- predict(object = cv.fit1, type="vars.unique", lambda = cv.fit1$cv.fit$lambda.min)
+                     
+sel.nvars.unique <- predict(object = cv.fit1, type="nvars.unique", lambda = cv.fit1$cv.fit$lambda.min)                     
 
-sel.vars.unique <- predict(object = cv.fit1, type="vars.unique",
-                           lambda = cv.fit1$cv.fit$lambda[c(20,50)])
-sel.nvars.unique <- predict(object = cv.fit1, type="nvars.unique",
-                            lambda = cv.fit1$cv.fit$lambda[c(20,50)])
-sel.vars <- predict(object = cv.fit1, type="vars",
-                    lambda=cv.fit1$cv.fit$lambda[c(20,50)])
-sel.nvars <- predict(object = cv.fit1, type="nvars",
-                     lambda=cv.fit1$cv.fit$lambda[c(20,50)])
 
 ## For values of lambda not in the sequence of fitted models, linear interpolation is used.
-sel.groups <- predict(object = cv.fit1, type="groups",
-                       lambda = c(0.1,0.05))
-sel.ngroups <- predict(object = cv.fit1, type="ngroups",
-                     lambda = c(0.1,0.05))
-sel.vars.unique <- predict(object = cv.fit1, type="vars.unique",
-                    lambda = c(0.1,0.05))
-sel.nvars.unique <- predict(object = cv.fit1, type="nvars.unique",
-                     lambda = c(0.1,0.05))
-sel.vars <- predict(object = cv.fit1, type="vars",
-                     lambda = c(0.1,0.05))
-sel.nvars <- predict(object = cv.fit1, type="nvars",
-                     lambda = c(0.1,0.05))
+sel.groups <- predict(object = cv.fit1, type="groups", lambda = c(0.1,0.05))
+
+sel.ngroups <- predict(object = cv.fit1, type="ngroups", lambda = c(0.1,0.05))
+
+sel.vars.unique <- predict(object = cv.fit1, type="vars.unique", lambda = c(0.1,0.05))
+
+sel.nvars.unique <- predict(object = cv.fit1, type="nvars.unique", lambda = c(0.1,0.05))
+
 
